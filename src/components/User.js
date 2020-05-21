@@ -5,13 +5,19 @@ import { signOut, getUser } from '../actions';
 class User extends React.Component {
 
     componentDidMount() {
-        console.log(this.props.userToken);
-        this.props.getUser(this.props.userToken);
+        const token = localStorage.getItem('token');
+        this.props.getUser(token);
     }
-
+    onSignOutClick = () => {
+        localStorage.removeItem('token');
+        this.props.signOut();
+    }
     render() {
         return (
-        <div>{this.props.userToken }</div>
+            <div>
+                <div>{console.log(this.props.user) }</div>
+                <button onClick={this.onSignOutClick}> Delete </button>
+            </div>
         );
     }
 }
@@ -19,9 +25,9 @@ class User extends React.Component {
 const mapStateToProps = (state) => {
     return { 
         isSignedIn: state.auth.isSignedIn,
-        userToken: state.auth.userToken,
         user: state.user
     };
 }
+
 
 export default connect(mapStateToProps, { getUser, signOut })(User);
