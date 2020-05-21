@@ -1,22 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { signOut, getUser } from '../actions';
+import history from '../history';
 
 class User extends React.Component {
-
     componentDidMount() {
-        const token = localStorage.getItem('token');
-        this.props.getUser(token);
+        if(this.props.isSignedIn) {
+            this.props.getUser(localStorage.getItem('token'));
+        } else {
+            history.push('/signin');
+        }
     }
-    onSignOutClick = () => {
-        localStorage.removeItem('token');
-        this.props.signOut();
+    signOutClick = () => {
+        this.props.signOut(localStorage.getItem('token'));
     }
     render() {
         return (
             <div>
                 <div>{console.log(this.props.user) }</div>
-                <button onClick={this.onSignOutClick}> Delete </button>
+                <button onClick={this.signOutClick}> Delete </button>
             </div>
         );
     }

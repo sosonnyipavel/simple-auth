@@ -15,8 +15,8 @@ export const getUser = (token) => async (dispatch) => {
     history.push('/');
 };
 
-export const signOut = () => {
-    return { 
-        type: SIGN_OUT
-    };
+export const signOut = (token) => async (dispatch) => {
+    await sessions.delete(`/sessions?access_token=${token}`);
+    dispatch ({type: SIGN_OUT});
+    history.push('/signin');
 };
