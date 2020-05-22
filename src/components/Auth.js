@@ -5,7 +5,6 @@ import { signIn } from '../actions';
 
 class Auth extends React.Component{
 
-
     onSubmit = (formValues) => {
         this.props.signIn(formValues);
     }
@@ -18,5 +17,6 @@ class Auth extends React.Component{
     }
     
 }
+
 
 export default connect(null, {signIn})(Auth);

@@ -4,6 +4,7 @@ import history from '../history';
 
 export const signIn = (formValues) => async (dispatch) => {
     const response = await sessions.post('/sessions', { email: formValues.email, password: formValues.password, session: history.location });
+    localStorage.setItem('token', response.data.session.access_token);
     dispatch( {type: SIGN_IN, payload:response.data });
     history.push('/');
 };
@@ -11,10 +12,12 @@ export const signIn = (formValues) => async (dispatch) => {
 export const getUser = (token) => async (dispatch) => {
     const response = await sessions.get(`/profile?access_token=${token}`);
     dispatch ({type: GET_USER, payload: response.data.user});
+    history.push('/');
 };
 
 export const signOut = (token) => async (dispatch) => {
     await sessions.delete(`/sessions?access_token=${token}`);
+    localStorage.removeItem('token');
     dispatch ({type: SIGN_OUT});
     history.push('/signin');
 };

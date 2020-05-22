@@ -30,8 +30,8 @@ class Form extends React.Component{
 
 const validate = (formValues) => {
     const errors ={};
-    if(!formValues.login) {
-        errors.login = 'You must enter a title!';
+    if(!formValues.email) {
+        errors.email = 'You must enter a title!';
     }
 
     if(!formValues.password) {

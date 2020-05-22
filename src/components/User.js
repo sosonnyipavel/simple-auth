@@ -5,13 +5,13 @@ import history from '../history';
 
 class User extends React.Component {
     componentDidMount() {
-        if(this.props.isSignedIn){
-            this.props.getUser(this.props.userToken);
+        const token = localStorage.getItem('token');
+        if (token) {
+            this.props.getUser(localStorage.getItem('token'));
         } else {
             history.push('/signin')
         }
     }
-
 
     userTable = () => {
         return (
@@ -37,12 +37,14 @@ class User extends React.Component {
     }
 
     signOutClick = () => {
-        this.props.signOut(this.props.userToken);
+        this.props.signOut(localStorage.getItem('token'));
     }
+
     render() {
         return (
-            <div>
+            <div className="ui inverted segment">
                 <div> {this.userTable()} </div>
+                    <button onClick={this.signOutClick} style={{marginTop:50}} className="ui inverted teal basic button">Log Out</button>
             </div>
         );
     }
@@ -51,7 +53,6 @@ class User extends React.Component {
 const mapStateToProps = (state) => {
     return { 
         isSignedIn: state.auth.isSignedIn,
-        userToken: state.auth.userToken,
         userData: state.user
     };
 }
