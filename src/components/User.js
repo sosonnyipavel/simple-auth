@@ -5,9 +5,9 @@ import history from '../history';
 
 class User extends React.Component {
     componentDidMount() {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token')
         if (token) {
-            this.props.getUser(localStorage.getItem('token'));
+            this.props.getUser(token);
         } else {
             history.push('/signin')
         }

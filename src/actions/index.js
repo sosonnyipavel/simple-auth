@@ -10,9 +10,14 @@ export const signIn = (formValues) => async (dispatch) => {
 };
 
 export const getUser = (token) => async (dispatch) => {
-    const response = await sessions.get(`/profile?access_token=${token}`);
-    dispatch ({type: GET_USER, payload: response.data.user});
-    history.push('/');
+    try {
+        const response = await sessions.get(`/profile?access_token=${token}`);
+        dispatch ({type: GET_USER, payload: response.data.user});
+        history.push('/');
+    } catch(e) {
+        localStorage.removeItem('token');
+        history.push('/signin');
+    }
 };
 
 export const signOut = (token) => async (dispatch) => {
