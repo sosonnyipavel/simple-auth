@@ -23,6 +23,7 @@ class Auth extends React.Component{
             );
         }
     }
+    
     render() {
         return (
             <div className="ui inverted segment">
