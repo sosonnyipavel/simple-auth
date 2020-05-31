@@ -3,10 +3,15 @@ import {SIGN_IN, SIGN_OUT, GET_USER} from './types';
 import history from '../history';
 
 export const signIn = (formValues) => async (dispatch) => {
-    const response = await sessions.post('/sessions', { email: formValues.email, password: formValues.password, session: history.location });
-    localStorage.setItem('token', response.data.session.access_token);
-    dispatch( {type: SIGN_IN, payload:response.data });
-    history.push('/');
+    try{
+        const response = await sessions.post('/sessions', { email: formValues.email, password: formValues.password, session: history.location });
+        localStorage.setItem('token', response.data.session.access_token);
+        dispatch( {type: SIGN_IN, payload:response.data });
+        history.push('/');
+    } catch(e) {
+        localStorage.setItem('wrongAuth', true );
+        history.push('/signin');
+    }
 };
 
 export const getUser = (token) => async (dispatch) => {

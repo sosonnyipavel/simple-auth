@@ -3,12 +3,21 @@ import { Field, reduxForm } from 'redux-form';
 
 class Form extends React.Component{
 
+    renderError({ touched, error  }) {
+        if (touched && error) {
+            return (
+                {touched} && {error} && <span>{error}</span>
+            );
+        }
+    }
 
-    renderInput = ({ input, label}) => {
+    renderInput = ({ input, label, type, meta}) => {
+        const className = `field ${meta.error && meta.touched ? 'error': ''}`;
         return (
-            <div className="field">
+            <div className={className}>
                 <label> {label} </label>
-                <input {...input} autoComplete="off" />
+                <input {...input} type={type} autoComplete="off" />
+                {this.renderError(meta)}
             </div>
         );
     };
@@ -17,11 +26,12 @@ class Form extends React.Component{
         this.props.onSubmit(formValues);
     }
 
+
     render() {
         return (
             <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui inverted form">
-                <Field name="email" component={this.renderInput} label="Enter Login" />
-                <Field name="password" component={this.renderInput} label="Enter Password" />
+                <Field name="email" type="email" component={this.renderInput} label="Enter Login" />
+                <Field name="password" type="password" component={this.renderInput} label="Enter Password" />
                     <button className="ui button primary">Submit</button>
             </form>
         );
@@ -31,16 +41,18 @@ class Form extends React.Component{
 const validate = (formValues) => {
     const errors ={};
     if(!formValues.email) {
-        errors.email = 'You must enter a title!';
+        errors.email = 'Required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formValues.email)) {
+        errors.email = 'Invalid email address'
     }
 
     if(!formValues.password) {
-        errors.password = 'You must enter a description'
-    }
+        errors.password = 'Required';
+    } 
     return errors;
 };
 
 export default reduxForm({
-    form: 'userForm',
-    validate
+    validate,
+    form: 'userForm'
 }) (Form);
