@@ -2,6 +2,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 class Form extends React.Component{
+
     constructor(props) {
         super(props)
         this.state = { buttonSubmit: false }
@@ -27,8 +28,8 @@ class Form extends React.Component{
     };
 
     onSubmit = (formValues) => {
-        this.props.onSubmit(formValues);
         this.setState({ buttonSubmit: true });
+        this.props.onSubmit(formValues);
     }
 
 
@@ -38,7 +39,7 @@ class Form extends React.Component{
             <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui inverted form">
                 <Field name="email" type="email" component={this.renderInput} label="Enter Login" />
                 <Field name="password" type="password" component={this.renderInput} label="Enter Password" />
-                    <button type="submit" disabled={this.state.buttonSubmit} className="ui button primary">Submit</button>
+                <button type="submit" disabled={this.state.buttonSubmit} className="ui button primary">Submit</button>
             </form>
         );
     }

@@ -4,7 +4,14 @@ import { signOut, getUser } from '../actions';
 import history from '../history';
 
 class User extends React.Component {
+    
+    constructor(props) {
+        super(props)
+        this.state = { buttonSubmit: false }
+    }
+
     componentDidMount() {
+        this.setState({ buttonSubmit: false });
         const token = localStorage.getItem('token')
         if (token) {
             this.props.getUser(token);
@@ -37,6 +44,7 @@ class User extends React.Component {
     }
 
     signOutClick = () => {
+        this.setState({ buttonSubmit: true });
         this.props.signOut(localStorage.getItem('token'));
     }
 
@@ -44,7 +52,14 @@ class User extends React.Component {
         return (
             <div className="ui inverted segment">
                 <div> {this.userTable()} </div>
-                    <button onClick={this.signOutClick} style={{marginTop:50}} className="ui inverted teal basic button">Log Out</button>
+                <button 
+                    onClick={this.signOutClick} 
+                    type="button" 
+                    disabled={this.state.buttonSubmit} 
+                    style={{marginTop:50}} 
+                    className="ui inverted teal basic button">
+                    Log Out
+                </button>
             </div>
         );
     }
