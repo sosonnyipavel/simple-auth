@@ -3,11 +3,6 @@ import { Field, reduxForm } from 'redux-form';
 
 class Form extends React.Component{
 
-    constructor(props) {
-        super(props)
-        this.state = { buttonSubmit: false }
-    }
-
     renderError({ touched, error  }) {
         if (touched && error) {
             return (
@@ -28,7 +23,6 @@ class Form extends React.Component{
     };
 
     onSubmit = (formValues) => {
-        this.setState({ buttonSubmit: true });
         this.props.onSubmit(formValues);
     }
 
@@ -39,7 +33,7 @@ class Form extends React.Component{
             <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui inverted form">
                 <Field name="email" type="email" component={this.renderInput} label="Enter Login" />
                 <Field name="password" type="password" component={this.renderInput} label="Enter Password" />
-                <button type="submit" disabled={this.state.buttonSubmit} className="ui button primary">Submit</button>
+                <button disabled={this.props.buttonSubmit} className="ui button primary">Submit</button>
             </form>
         );
     }
@@ -60,6 +54,6 @@ const validate = (formValues) => {
 };
 
 export default reduxForm({
-    validate,
-    form: 'userForm'
+    form: 'userForm',
+    validate
 }) (Form);

@@ -11,12 +11,11 @@ class User extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ buttonSubmit: false });
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token');
         if (token) {
             this.props.getUser(token);
         } else {
-            history.push('/signin')
+            history.push('/signin');
         }
     }
 
