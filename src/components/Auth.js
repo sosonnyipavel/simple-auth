@@ -18,21 +18,22 @@ class Auth extends React.Component{
         } 
     }
 
+    handleChange = () => {
+        this.setState({ buttonSubmit: false });
+    }
+
     onSubmit = (formValues) => {
         this.setState({ buttonSubmit: true });
-        this.props.signIn(formValues).then(() => {
-            this.setState({ buttonSubmit: false });
-            localStorage.removeItem('wrongAuth');
-        });
+        this.props.signIn(formValues);
     }
 
     badResponse() {
-        if (localStorage.getItem('wrongAuth')){
+        if (this.props.errorMessage){
             return (
                 <div className="ui inverted relaxed divided list">
                     <div className="item">
                         <div className="content">
-                            <h4 className="ui red inverted header">Login or password is wrong!</h4>
+                            <h4 className="ui red inverted header">{this.props.errorMessage}</h4>
                         </div>
                     </div>
                 </div>
@@ -44,7 +45,7 @@ class Auth extends React.Component{
     render() {
         return (
             <div className="ui inverted segment">
-                <Form onSubmit={this.onSubmit} buttonSubmit={this.state.buttonSubmit} />
+                <Form onChange={this.handleChange} onSubmit={this.onSubmit} buttonSubmit={this.state.buttonSubmit} />
                 {this.badResponse()}
             </div>
         );
@@ -52,5 +53,11 @@ class Auth extends React.Component{
     
 }
 
+const mapStateToProps = (state) => {
+    return { 
+        errorMessage: state.auth.errorMessage,
+        isSignedIn: state.auth.isSignedIn
+    };
+}
 
-export default connect(null, {signIn})(Auth);
+export default connect(mapStateToProps, {signIn})(Auth);

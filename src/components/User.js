@@ -7,7 +7,7 @@ class User extends React.Component {
     
     constructor(props) {
         super(props)
-        this.state = { buttonSubmit: false }
+        this.state = { buttonLogOut: false }
     }
 
     componentDidMount() {
@@ -20,6 +20,9 @@ class User extends React.Component {
     }
 
     userTable = () => {
+        if (this.props.errorMessage) {
+            return <h4 className="ui red inverted header">{this.props.errorMessage}</h4>
+        }
         return (
             <table className="ui inverted table">
             <thead>
@@ -43,8 +46,9 @@ class User extends React.Component {
     }
 
     signOutClick = () => {
-        this.setState({ buttonSubmit: true });
-        this.props.signOut(localStorage.getItem('token'));
+        this.setState({ buttonLogOut: true });
+        const token = localStorage.getItem('token');
+        this.props.signOut(token);
     }
 
     render() {
@@ -52,9 +56,9 @@ class User extends React.Component {
             <div className="ui inverted segment">
                 <div> {this.userTable()} </div>
                 <button 
-                    onClick={this.signOutClick} 
+                    onClick={this.signOutClick}
                     type="button" 
-                    disabled={this.state.buttonSubmit} 
+                    disabled={this.state.buttonLogOut} 
                     style={{marginTop:50}} 
                     className="ui inverted teal basic button">
                     Log Out
@@ -66,8 +70,8 @@ class User extends React.Component {
 
 const mapStateToProps = (state) => {
     return { 
-        isSignedIn: state.auth.isSignedIn,
-        userData: state.user
+        userData: state.user,
+        errorMessage: state.auth.errorMessage
     };
 }
 
