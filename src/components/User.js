@@ -19,6 +19,14 @@ class User extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps) {
+        if(this.props.location.key !== prevProps.location.key) {
+            if (this.props.errorMessage){
+                this.setState({ buttonLogOut: false });
+            }
+        }
+    }
+
     userTable = () => {
         if (this.props.errorMessage) {
             return <h4 className="ui red inverted header">{this.props.errorMessage}</h4>

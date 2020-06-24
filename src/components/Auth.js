@@ -18,16 +18,21 @@ class Auth extends React.Component{
         } 
     }
 
-    handleChange = () => {
-        this.setState({ buttonSubmit: false });
+    componentDidUpdate(prevProps) {
+        if(this.props.location.key !== prevProps.location.key) {
+            if (this.props.errorMessage){
+                this.setState({ buttonSubmit: false });
+            }
+        }
     }
+
 
     onSubmit = (formValues) => {
         this.setState({ buttonSubmit: true });
         this.props.signIn(formValues);
     }
 
-    badResponse() {
+    badResponse () {
         if (this.props.errorMessage){
             return (
                 <div className="ui inverted relaxed divided list">
@@ -45,8 +50,8 @@ class Auth extends React.Component{
     render() {
         return (
             <div className="ui inverted segment">
-                <Form onChange={this.handleChange} onSubmit={this.onSubmit} buttonSubmit={this.state.buttonSubmit} />
-                {this.badResponse()}
+                <Form onSubmit={this.onSubmit} buttonSubmit={this.state.buttonSubmit} />
+                <div>{this.badResponse()}</div>
             </div>
         );
     }
@@ -55,8 +60,7 @@ class Auth extends React.Component{
 
 const mapStateToProps = (state) => {
     return { 
-        errorMessage: state.auth.errorMessage,
-        isSignedIn: state.auth.isSignedIn
+        errorMessage: state.auth.errorMessage
     };
 }
 

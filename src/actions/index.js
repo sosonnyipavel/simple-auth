@@ -9,7 +9,6 @@ export const signIn = (formValues) => async (dispatch) => {
         dispatch( {type: SIGN_IN});
         history.push('/');
     } catch(e) {
-        console.log(e.response);
         dispatch( {type: SIGN_IN, payload: e.response.data.error.message});
         history.push('/signin');
     }
@@ -38,7 +37,7 @@ export const signOut = (token) => async (dispatch) => {
         dispatch ({type: SIGN_OUT});
         history.push('/signin');
     } catch(e) {
-        if (e.response.status === 401) {
+        if (e.response.status !== 401) {
             localStorage.removeItem('token');
             history.push('/signin');
         } else {
