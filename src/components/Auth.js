@@ -32,7 +32,7 @@ class Auth extends React.Component{
         this.props.signIn(formValues);
     }
 
-    badResponse () {
+    badResponse() {
         if (this.props.errorMessage){
             return (
                 <div className="ui inverted relaxed divided list">
@@ -43,7 +43,7 @@ class Auth extends React.Component{
                     </div>
                 </div>
             );
-        }
+        } else return null;
     }
     
     

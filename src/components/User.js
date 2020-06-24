@@ -27,7 +27,7 @@ class User extends React.Component {
         }
     }
 
-    userTable = () => {
+    userTable() {
         if (this.props.errorMessage) {
             return <h4 className="ui red inverted header">{this.props.errorMessage}</h4>
         }
