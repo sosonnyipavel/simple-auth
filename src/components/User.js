@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { signOut, getUser } from '../actions';
+import ModalEdit from './ModalEdit';
 import history from '../history';
 
 class User extends React.Component {
     
     constructor(props) {
         super(props)
-        this.state = { buttonLogOut: false }
+        this.state = { buttonLogOut: false, modalClassName: 'ui dimmer modals visible'};
     }
 
     componentDidMount() {
@@ -59,6 +60,9 @@ class User extends React.Component {
         this.props.signOut(token);
     }
 
+    buttonEdit = () => {
+        this.setState({ modalClassName: 'ui dimmer modals visible active'});
+    }
     render() {
         return (
             <div className="ui inverted segment">
@@ -71,6 +75,8 @@ class User extends React.Component {
                     className="ui inverted teal basic button">
                     Log Out
                 </button>
+                <ModalEdit onClassName={this.state.modalClassName} />
+                <div onClick={ this.buttonEdit } className="ui inverted olive button" > Edit </div>
             </div>
         );
     }

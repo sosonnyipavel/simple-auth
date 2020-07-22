@@ -1,5 +1,5 @@
 import sessions from '../api/sessions';
-import {SIGN_IN, SIGN_OUT, GET_USER} from './types';
+import {SIGN_IN, SIGN_OUT, GET_USER, EDIT_USER} from './types';
 import history from '../history';
 
 export const signIn = (formValues) => async (dispatch) => {
@@ -30,6 +30,21 @@ export const getUser = (token) => async (dispatch) => {
     }
 };
 
+export const editUser = (token, userEdit) => async (dispatch) => {
+        const response = await sessions.patch(`/profile?access_token=${token}`, 
+        {
+            user: 
+                {   
+                    first_name: userEdit.userFirstName,
+                    last_name: userEdit.userLastName,
+                    email: userEdit.userEmail,
+                    phone: userEdit.userPhone
+                } 
+        });
+        dispatch ({type: EDIT_USER, payload: response});
+        history.push('/signin');
+};
+
 export const signOut = (token) => async (dispatch) => {
     try {
         await sessions.delete(`/sessions?access_token=${token}`);
@@ -39,10 +54,8 @@ export const signOut = (token) => async (dispatch) => {
     } catch(e) {
         if (e.response.status !== 401) {
             localStorage.removeItem('token');
-            history.push('/signin');
         } else {
             dispatch ({type: SIGN_OUT, payload: e.response.data.error.message});
-            history.push('/');
         }
     }
 };
