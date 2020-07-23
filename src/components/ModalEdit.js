@@ -16,7 +16,7 @@ class ModalEdit extends React.Component{
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props !== prevProps) {
+        if(this.props.onClassName !== prevProps.onClassName) {
             this.setState({
                 userFirstName: this.props.userData.userFirstName,
                 userLastName: this.props.userData.userLastName,
@@ -37,7 +37,7 @@ class ModalEdit extends React.Component{
         }
     }
 
-    handleSubmit = () => {
+    handleSubmitYes = () => {
         if(this.state.userFirstName !== this.props.userData.userFirstName || 
             this.state.userLastName !== this.props.userData.userLastName ||
             this.state.userEmail !== this.props.userData.userEmail ||
@@ -46,6 +46,10 @@ class ModalEdit extends React.Component{
                 const token = localStorage.getItem('token');
                 this.props.editUser(token, this.state);
             }
+        this.setState({ className: 'ui dimmer modals visible'});
+    }
+
+    handleSubmitNo = () => {
         this.setState({ className: 'ui dimmer modals visible'});
     }
 
@@ -84,11 +88,11 @@ class ModalEdit extends React.Component{
                     </div>
                 <div className="actions">
                     <p>Submit changes?</p>
-                    <button onClick={this.handleSubmit}  className="ui red basic cancel inverted button">
+                    <button onClick={this.handleSubmitNo}  className="ui red basic cancel inverted button">
                     <i className="remove icon"></i>
                     No
                     </button>
-                    <button onClick={this.handleSubmit} className="ui green ok inverted button">
+                    <button onClick={this.handleSubmitYes} className="ui green ok inverted button">
                     <i className="checkmark icon"></i>
                     Yes
                     </button>

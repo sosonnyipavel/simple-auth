@@ -28,6 +28,7 @@ class User extends React.Component {
         }
     }
 
+
     userTable() {
         if (this.props.errorMessage) {
             return <h4 className="ui red inverted header">{this.props.errorMessage}</h4>
@@ -63,10 +64,12 @@ class User extends React.Component {
     buttonEdit = () => {
         this.setState({ modalClassName: 'ui dimmer modals visible active'});
     }
+    
     render() {
         return (
             <div className="ui inverted segment">
                 <div> {this.userTable()} </div>
+                <ModalEdit onClassName={this.state.modalClassName} />
                 <button 
                     onClick={this.signOutClick}
                     type="button" 
@@ -75,8 +78,7 @@ class User extends React.Component {
                     className="ui inverted teal basic button">
                     Log Out
                 </button>
-                <ModalEdit onClassName={this.state.modalClassName} />
-                <div onClick={ this.buttonEdit } className="ui inverted olive button" > Edit </div>
+                <button onClick={ this.buttonEdit } className="ui inverted olive button" > Edit </button>
             </div>
         );
     }
