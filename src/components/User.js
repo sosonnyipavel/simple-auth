@@ -62,7 +62,7 @@ class User extends React.Component {
     }
 
     buttonEdit = () => {
-        this.props.modalShow('ui dimmer modals visible active');
+        this.props.modalShow(true);
     }
     
     render() {

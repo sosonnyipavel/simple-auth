@@ -1,8 +1,16 @@
-import { SHOW_MODAL } from '../actions/types';
+import { SHOW_MODAL, HIDE_MODAL } from '../actions/types';
+const INITIAL_STATE = { show: 'none' }
 
-export default (modal = 'ui dimmer modals visible' , action) => {
+export default (state = INITIAL_STATE , action) => {
     if (action.type  === SHOW_MODAL) {
         return action.payload;
     }
-    return modal;
+    switch(action.type) {
+        case SHOW_MODAL:
+            return {...state, show: action.payload};
+        case HIDE_MODAL:
+            return {...state, show: action.payload};
+        default:
+            return state;
+    }
 };

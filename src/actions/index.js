@@ -1,5 +1,5 @@
 import sessions from '../api/sessions';
-import {SIGN_IN, SIGN_OUT, GET_USER, EDIT_USER, SHOW_MODAL} from './types';
+import {SIGN_IN, SIGN_OUT, GET_USER, EDIT_USER, SHOW_MODAL, HIDE_MODAL} from './types';
 import history from '../history';
 
 export const signIn = (formValues) => async (dispatch) => {
@@ -60,11 +60,16 @@ export const signOut = (token) => async (dispatch) => {
     }
 };
 
-export const modalShow = (classModal) => {
-    if(classModal){
+export const modalShow = (showModal) => {
+    if(showModal){
         return {
             type: SHOW_MODAL,
-            payload: classModal
+            payload: 'block'
         };
+    } else {
+        return{
+            type: HIDE_MODAL,
+            payload: 'none'
+        }
     }
 };

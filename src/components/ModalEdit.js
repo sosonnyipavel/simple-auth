@@ -16,7 +16,7 @@ class ModalEdit extends React.Component {
 
     
     componentDidUpdate(prevProps) {
-        if(this.props.className !== prevProps.className) {
+        if(this.props.showModal !== prevProps.showModal) {
             this.setState({
                 userFirstName: this.props.userData.userFirstName,
                 userLastName: this.props.userData.userLastName,
@@ -45,15 +45,15 @@ class ModalEdit extends React.Component {
                 const token = localStorage.getItem('token');
                 this.props.editUser(token, this.state);
             }
-        this.props.modalShow('ui dimmer modals visible');
+        this.props.modalShow(false);
     }
 
     handleSubmitNo = () => {
-        this.props.modalShow('ui dimmer modals visible');
+        this.props.modalShow(false);
     }
     render() {
         return ReactDOM.createPortal(
-            <div className={this.props.className} >
+            <div className="ui dimmer modals visible active" style={{display: this.props.showModal.show}} >
                 <div className="ui small basic modal visible active" >
                     <div className="content">
                         <div className="ui form">
@@ -97,7 +97,7 @@ class ModalEdit extends React.Component {
 const mapStateToProps = (state) => {
     return { 
         userData: state.user,
-        className: state.modal
+        showModal: state.modal
     };
 }
 
