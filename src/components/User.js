@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { signOut, getUser, modalShow } from '../actions';
 import ModalEdit from './ModalEdit';
+import MaterialSnackbar from './MaterialSnackbar';
 import history from '../history';
 
 class User extends React.Component {
@@ -22,7 +23,7 @@ class User extends React.Component {
 
     componentDidUpdate(prevProps) {
         if(this.props.location.key !== prevProps.location.key) {
-            if (this.props.errorMessage){
+            if (this.props.message){
                 this.setState({ buttonLogOut: false });
             }
         }
@@ -30,9 +31,6 @@ class User extends React.Component {
 
 
     userTable() {
-        if (this.props.errorMessage) {
-            return <h4 className="ui red inverted header">{this.props.errorMessage}</h4>
-        }
         return (
             <table className="ui inverted table">
             <thead>
@@ -79,6 +77,7 @@ class User extends React.Component {
                     Log Out
                 </button>
                 <button onClick={ this.buttonEdit } className="ui inverted olive button" > Edit </button>
+                <MaterialSnackbar message={this.props.message} />
             </div>
         );
     }
@@ -87,7 +86,7 @@ class User extends React.Component {
 const mapStateToProps = (state) => {
     return { 
         userData: state.user,
-        errorMessage: state.auth.errorMessage
+        message: state.auth.errorMessage
     };
 }
 

@@ -6,28 +6,22 @@ import Alert from '@material-ui/lab/Alert';
 class MaterialSnackbar extends React.Component{
     constructor(props) {
         super(props);
-        this.state = { openSuccess: false, openError:false};
+        this.state = { openSuccess: true, openError:false};
     }
 
-  handleClickSuccess = () => {
-    this.setState({ openSuccess: true });
-  };
-  handleClickError = () => {
-    this.setState({ openError: true });
-  };
-
-  componentDidUpdate(prevProps, prevState){
-      if(this.props.error !==prevProps.error){
-        this.setState({ openError: true });
-      }
+  componentDidUpdate(prevProps){
+    if(this.props.message !== prevProps.message){
+      this.setState({ openError: true });
+      this.setState({ openSuccess: false });
+    }
   }
 
   handleClose = (reason) => {
     if (reason === 'clickaway') {
       return;
     }
-    this.setState({ openSuccess: false });
-    this.setState({ openError: false });
+      this.setState({ openError: false });
+      this.setState({ openSuccess: false });
   };
 
   render() {
@@ -35,11 +29,11 @@ class MaterialSnackbar extends React.Component{
     <div>
       <Snackbar open={this.state.openSuccess} autoHideDuration={6000} anchorOrigin={{horizontal: 'center', vertical: 'bottom'}} onClose={this.handleClose}>
         <Alert onClose={this.handleClose} severity="success">
-          This is a success message!
+        Success operation
         </Alert>
       </Snackbar>
       <Snackbar open={this.state.openError} autoHideDuration={6000} anchorOrigin={{horizontal: 'center', vertical: 'bottom'}} onClose={this.handleClose}>
-        <Alert onClose={this.handleClose}  severity="error">{this.props.error}</Alert>
+        <Alert onClose={this.handleClose}  severity="error">{this.props.message}</Alert>
       </Snackbar>
     </div>
   );

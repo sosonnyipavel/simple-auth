@@ -1,5 +1,5 @@
 import sessions from '../api/sessions';
-import {SIGN_IN, SIGN_OUT, GET_USER, EDIT_USER, SHOW_MODAL, HIDE_MODAL} from './types';
+import {SIGN_IN, SIGN_OUT, GET_USER, EDIT_USER, SHOW_MODAL, HIDE_MODAL, SHOW_ERROR} from './types';
 import history from '../history';
 
 export const signIn = (formValues) => async (dispatch) => {
@@ -9,7 +9,7 @@ export const signIn = (formValues) => async (dispatch) => {
         dispatch( {type: SIGN_IN});
         history.push('/');
     } catch(e) {
-        dispatch( {type: SIGN_IN, payload: e.response.data.error.message});
+        dispatch( {type: SHOW_ERROR, payload: e.response.data.error.message});
         history.push('/signin');
     }
 };
@@ -24,13 +24,13 @@ export const getUser = (token) => async (dispatch) => {
             localStorage.removeItem('token');
             history.push('/signin');
         } else {
-            dispatch ({type: SIGN_IN, payload: e.response.data.error.message});
-            history.push('/signin');
+            dispatch ({type: SHOW_ERROR, payload: e.response.data.error.message});
         }
     }
 };
 
 export const editUser = (token, userEdit) => async (dispatch) => {
+    try {    
         const response = await sessions.patch(`/profile?access_token=${token}`, 
         {
             user: 
@@ -43,6 +43,15 @@ export const editUser = (token, userEdit) => async (dispatch) => {
         });
         dispatch ({type: EDIT_USER, payload: response});
         history.push('/signin');
+    } catch (e){
+        if ( e.response.status === 401 ) {
+            localStorage.removeItem('token');
+            history.push('/');
+        } else {
+            dispatch ({type: SHOW_ERROR, payload: e.response.data.error.message});
+        }
+
+    }
 };
 
 export const signOut = (token) => async (dispatch) => {
@@ -53,9 +62,9 @@ export const signOut = (token) => async (dispatch) => {
         history.push('/signin');
     } catch(e) {
         if (e.response.status !== 401) {
-            localStorage.removeItem('token');
+            dispatch ({type: SHOW_ERROR, payload: e.response.data.error.message});
         } else {
-            dispatch ({type: SIGN_OUT, payload: e.response.data.error.message});
+            history.push('/signin');
         }
     }
 };

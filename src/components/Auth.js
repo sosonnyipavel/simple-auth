@@ -21,7 +21,7 @@ class Auth extends React.Component{
 
     componentDidUpdate(prevProps) {
         if(this.props.location.key !== prevProps.location.key) {
-            if (this.props.errorMessage){
+            if (this.props.message){
                 this.setState({ buttonSubmit: false });
             }
         }
@@ -32,30 +32,13 @@ class Auth extends React.Component{
         this.setState({ buttonSubmit: true });
         this.props.signIn(formValues);
     }
-
-    // badResponse() {
-    //     if (this.props.errorMessage){
-    //         return (
-    //             <div className="ui inverted relaxed divided list">
-    //                 <div className="item">
-    //                     <div className="content">
-    //                         <h4 className="ui red inverted header">{this.props.errorMessage}</h4>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         );
-    //     } else return null;
-    // }
-    
     
     render() {
         return (
 
             <div className="ui inverted segment">
                 <Form onSubmit={this.onSubmit} buttonSubmit={this.state.buttonSubmit} />
-                <div> 
-                    <MaterialSnackbar error={this.props.errorMessage} />
-                </div>
+                <MaterialSnackbar message={this.props.message} />
             </div>
         );
     }
@@ -64,7 +47,7 @@ class Auth extends React.Component{
 
 const mapStateToProps = (state) => {
     return { 
-        errorMessage: state.auth.errorMessage
+        message: state.auth.errorMessage
     };
 }
 
