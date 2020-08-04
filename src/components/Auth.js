@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from './Form';
+import MaterialSnackbar from './MaterialSnackbar';
 import {connect} from 'react-redux';
 import { signIn } from '../actions';
 import history from '../history';
@@ -32,26 +33,29 @@ class Auth extends React.Component{
         this.props.signIn(formValues);
     }
 
-    badResponse() {
-        if (this.props.errorMessage){
-            return (
-                <div className="ui inverted relaxed divided list">
-                    <div className="item">
-                        <div className="content">
-                            <h4 className="ui red inverted header">{this.props.errorMessage}</h4>
-                        </div>
-                    </div>
-                </div>
-            );
-        } else return null;
-    }
+    // badResponse() {
+    //     if (this.props.errorMessage){
+    //         return (
+    //             <div className="ui inverted relaxed divided list">
+    //                 <div className="item">
+    //                     <div className="content">
+    //                         <h4 className="ui red inverted header">{this.props.errorMessage}</h4>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         );
+    //     } else return null;
+    // }
     
     
     render() {
         return (
+
             <div className="ui inverted segment">
                 <Form onSubmit={this.onSubmit} buttonSubmit={this.state.buttonSubmit} />
-                <div>{this.badResponse()}</div>
+                <div> 
+                    <MaterialSnackbar error={this.props.errorMessage} />
+                </div>
             </div>
         );
     }
