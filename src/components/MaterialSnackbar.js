@@ -6,7 +6,7 @@ import Alert from '@material-ui/lab/Alert';
 class MaterialSnackbar extends React.Component{
     constructor(props) {
         super(props);
-        this.state = { openSuccess: true, openError:false};
+        this.state = { openSuccess: false, openError: false};
     }
 
   componentDidUpdate(prevProps){

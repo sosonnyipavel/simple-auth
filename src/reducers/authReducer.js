@@ -1,18 +1,14 @@
-import { SIGN_IN, SIGN_OUT, SHOW_ERROR } from '../actions/types';
-const INITIAL_STATE = {
-    errorMessage: null
-}
+import { SIGN_IN, SIGN_OUT } from '../actions/types';
+const INITIAL_STATE = {};
 
 export default (state = INITIAL_STATE, action) => {
 
     switch (action.type) {
         case SIGN_IN:
-            return {...state, errorMessage: null};
-        case SHOW_ERROR:
-            return {...state, errorMessage: action.payload};
+            return {...state};
         case SIGN_OUT:
-            return {...state, errorMessage: null};
+            return {...state};
         default:
-            return INITIAL_STATE;
+            return state;
     }
 };

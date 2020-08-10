@@ -3,35 +3,20 @@ import {SIGN_IN, SIGN_OUT, GET_USER, EDIT_USER, SHOW_MODAL, HIDE_MODAL, SHOW_ERR
 import history from '../history';
 
 export const signIn = (formValues) => async (dispatch) => {
-    try{
-        const response = await sessions.post('/sessions', { email: formValues.email, password: formValues.password, session: history.location });
-        localStorage.setItem('token', response.data.session.access_token);
-        dispatch( {type: SIGN_IN});
-        history.push('/');
-    } catch(e) {
-        dispatch( {type: SHOW_ERROR, payload: e.response.data.error.message});
-        history.push('/signin');
-    }
+    const response = await sessions.post('/sessions', { email: formValues.email, password: formValues.password, session: history.location });
+    localStorage.setItem('token', response.data.session.access_token);
+    dispatch( {type: SIGN_IN});
+    history.push('/');
 };
 
 export const getUser = (token) => async (dispatch) => {
-    try {
-        const response = await sessions.get(`/profile?access_token=${token}`);
-        dispatch ({type: GET_USER, payload: response.data.user});
-        history.push('/');
-    } catch(e) {
-        if ( e.response.status === 401 ) {
-            localStorage.removeItem('token');
-            history.push('/signin');
-        } else {
-            dispatch ({type: SHOW_ERROR, payload: e.response.data.error.message});
-        }
-    }
+    const response = await sessions.get(`/profile?access_token=${token}`);
+    dispatch ({type: GET_USER, payload: response.data.user});
+    history.push('/');
 };
 
 export const editUser = (token, userEdit) => async (dispatch) => {
-    try {    
-        const response = await sessions.patch(`/profile?access_token=${token}`, 
+    const response = await sessions.patch(`/profile?access_token=${token}`, 
         {
             user: 
                 {   
@@ -41,32 +26,15 @@ export const editUser = (token, userEdit) => async (dispatch) => {
                     phone: userEdit.userPhone
                 } 
         });
-        dispatch ({type: EDIT_USER, payload: response});
-        history.push('/signin');
-    } catch (e){
-        if ( e.response.status === 401 ) {
-            localStorage.removeItem('token');
-            history.push('/');
-        } else {
-            dispatch ({type: SHOW_ERROR, payload: e.response.data.error.message});
-        }
-
-    }
+    dispatch ({type: EDIT_USER, payload: response});
+    history.push('/signin');
 };
 
 export const signOut = (token) => async (dispatch) => {
-    try {
-        await sessions.delete(`/sessions?access_token=${token}`);
-        localStorage.removeItem('token');
-        dispatch ({type: SIGN_OUT});
-        history.push('/signin');
-    } catch(e) {
-        if (e.response.status !== 401) {
-            dispatch ({type: SHOW_ERROR, payload: e.response.data.error.message});
-        } else {
-            history.push('/signin');
-        }
-    }
+    await sessions.delete(`/sessions?access_token=${token}`);
+    localStorage.removeItem('token');
+    dispatch ({type: SIGN_OUT});
+    history.push('/signin');
 };
 
 export const modalShow = (showModal) => {
@@ -81,4 +49,9 @@ export const modalShow = (showModal) => {
             payload: 'none'
         }
     }
+};
+
+export const errorCatch = (error) => async (dispatch) => {
+    await dispatch ({type: SHOW_ERROR, payload: error.response});
+    history.push('/signin');
 };
