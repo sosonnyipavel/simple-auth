@@ -53,5 +53,5 @@ export const modalShow = (showModal) => {
 
 export const errorCatch = (error) => async (dispatch) => {
     await dispatch ({type: SHOW_ERROR, payload: error.response});
-    history.push('/signin');
+    //history.push('/signin');
 };

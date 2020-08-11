@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { editUser, modalShow } from '../actions';
+import { editUser, modalShow, errorCatch } from '../actions';
+import MaterialSnackbar from './MaterialSnackbar';
 
 class ModalEdit extends React.Component {
     constructor(props) {
@@ -43,7 +44,7 @@ class ModalEdit extends React.Component {
             this.state.userPhone !== this.props.userData.userPhone) 
             {
                 const token = localStorage.getItem('token');
-                this.props.editUser(token, this.state);
+                this.props.editUser(token, this.state).catch((error) => this.props.errorCatch(error));
             }
         this.props.modalShow(false);
     }
@@ -88,6 +89,7 @@ class ModalEdit extends React.Component {
                         Yes
                         </button>
                     </div>
+                    <MaterialSnackbar message={this.props.message} />
                 </div>
             </div>, document.querySelector('#modal')       
         );
@@ -97,9 +99,10 @@ class ModalEdit extends React.Component {
 const mapStateToProps = (state) => {
     return { 
         userData: state.user,
-        showModal: state.modal
+        showModal: state.modal,
+        message: state.error.errorMessage
     };
 }
 
 
-export default connect(mapStateToProps, { editUser, modalShow })(ModalEdit);
+export default connect(mapStateToProps, { editUser, modalShow, errorCatch })(ModalEdit);
