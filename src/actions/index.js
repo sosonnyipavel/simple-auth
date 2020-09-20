@@ -1,6 +1,9 @@
 import sessions from '../api/sessions';
-import {SIGN_IN, SIGN_OUT, GET_USER, EDIT_USER, SHOW_MODAL, HIDE_MODAL, SHOW_ERROR} from './types';
+import {SIGN_IN, SIGN_OUT, GET_USER, EDIT_USER, SHOW_MODAL, HIDE_MODAL} from './types';
+import { createThunkRoutine } from 'redux-thunk-routine';
 import history from '../history';
+
+export const showErrorRoutine = createThunkRoutine('SHOW_ERROR');
 
 export const signIn = (formValues) => async (dispatch) => {
     const response = await sessions.post('/sessions', { email: formValues.email, password: formValues.password, session: history.location });
@@ -49,9 +52,4 @@ export const modalShow = (showModal) => {
             payload: 'none'
         }
     }
-};
-
-export const errorCatch = (error) => async (dispatch) => {
-    await dispatch ({type: SHOW_ERROR, payload: error.response});
-    //history.push('/signin');
 };

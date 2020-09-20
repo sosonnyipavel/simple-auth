@@ -1,16 +1,16 @@
-import { SHOW_ERROR } from '../actions/types';
+import { showErrorRoutine } from '../actions';
 
 const INITIAL_STATE = {
     errorMessage: null
 }
 
 export default (state = INITIAL_STATE, action) => {
-    if(action.type === SHOW_ERROR){
-        if (action.payload.status === 401) {
+    if(showErrorRoutine.isSuccessAction(action)){
+        if (action.payload.response.status === 401) {
             localStorage.removeItem('token');
             return {...state, errorMessage: 'Missing or wrong token'};
         } else {
-            return {...state, errorMessage: action.payload.data.error.message};
+            return {...state, errorMessage: action.payload.response.data.error.message};
         }
     }
     return INITIAL_STATE;

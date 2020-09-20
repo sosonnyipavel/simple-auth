@@ -2,7 +2,8 @@ import React from 'react';
 import Form from './Form';
 import MaterialSnackbar from './MaterialSnackbar';
 import {connect} from 'react-redux';
-import { signIn, errorCatch } from '../actions';
+import { signIn} from '../actions';
+import { showError } from '../actions/showError';
 import history from '../history';
 
 class Auth extends React.Component{
@@ -28,7 +29,7 @@ class Auth extends React.Component{
 
     onSubmit = (formValues) => {
         this.setState({ buttonSubmit: true });
-        this.props.signIn(formValues).catch((error) => this.props.errorCatch(error));
+        this.props.signIn(formValues).catch((error) => this.props.showError(error));
     }
     
     render() {
@@ -49,4 +50,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps, {signIn, errorCatch})(Auth);
+export default connect(mapStateToProps, {signIn, showError})(Auth);
