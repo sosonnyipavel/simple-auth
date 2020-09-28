@@ -1,9 +1,12 @@
 import sessions from '../api/sessions';
-import {SIGN_IN, SIGN_OUT, GET_USER, EDIT_USER, SHOW_MODAL, HIDE_MODAL} from './types';
+import {SIGN_IN, SIGN_OUT, GET_USER, EDIT_USER} from './types';
 import { createThunkRoutine } from 'redux-thunk-routine';
 import history from '../history';
 
 export const showErrorRoutine = createThunkRoutine('SHOW_ERROR');
+export const showModalRoutine = createThunkRoutine('SHOW_MODAL');
+export const hideModalRoutine = createThunkRoutine('HIDE_MODAL');
+
 
 export const signIn = (formValues) => async (dispatch) => {
     const response = await sessions.post('/sessions', { email: formValues.email, password: formValues.password, session: history.location });
@@ -38,18 +41,4 @@ export const signOut = (token) => async (dispatch) => {
     localStorage.removeItem('token');
     dispatch ({type: SIGN_OUT});
     history.push('/signin');
-};
-
-export const modalShow = (showModal) => {
-    if(showModal){
-        return {
-            type: SHOW_MODAL,
-            payload: 'block'
-        };
-    } else {
-        return{
-            type: HIDE_MODAL,
-            payload: 'none'
-        }
-    }
 };

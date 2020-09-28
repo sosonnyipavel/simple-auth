@@ -2,7 +2,7 @@ import { showErrorRoutine } from '../actions';
 
 const INITIAL_STATE = {
     errorMessage: null
-}
+};
 
 export default (state = INITIAL_STATE, action) => {
     if(showErrorRoutine.isSuccessAction(action)){
@@ -12,6 +12,6 @@ export default (state = INITIAL_STATE, action) => {
         } else {
             return {...state, errorMessage: action.payload.response.data.error.message};
         }
-    }
+    } 
     return INITIAL_STATE;
 };

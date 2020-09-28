@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { signOut, getUser, modalShow } from '../actions';
+import { signOut, getUser } from '../actions';
 import { showError } from '../actions/showError';
+import { showModal } from '../actions/editModal';
 import ModalEdit from './ModalEdit';
 import MaterialSnackbar from './MaterialSnackbar';
 import history from '../history';
@@ -59,7 +60,7 @@ class User extends React.Component {
     }
 
     buttonEdit = () => {
-        this.props.modalShow(true);
+        this.props.showModal(true);
     }
     
     render() {
@@ -90,4 +91,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, { getUser, signOut, modalShow, showError })(User);
+export default connect(mapStateToProps, { getUser, signOut, showModal, showError })(User);

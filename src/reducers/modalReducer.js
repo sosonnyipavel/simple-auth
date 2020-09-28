@@ -1,16 +1,12 @@
-import { SHOW_MODAL, HIDE_MODAL } from '../actions/types';
+import { showModalRoutine, hideModalRoutine } from '../actions';
 const INITIAL_STATE = { show: 'none' }
 
 export default (state = INITIAL_STATE , action) => {
-    if (action.type  === SHOW_MODAL) {
-        return action.payload;
+    if(showModalRoutine.isSuccessAction(action)){
+        return {...state, show: 'flex'};
     }
-    switch(action.type) {
-        case SHOW_MODAL:
-            return {...state, show: action.payload};
-        case HIDE_MODAL:
-            return {...state, show: action.payload};
-        default:
-            return state;
+    if(hideModalRoutine.isSuccessAction(action)){
+        return INITIAL_STATE;
     }
+    return state;
 };

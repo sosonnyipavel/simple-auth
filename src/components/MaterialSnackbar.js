@@ -9,10 +9,14 @@ class MaterialSnackbar extends React.Component{
         this.state = { openSuccess: false, openError: false};
     }
 
+    componentDidMount(){
+      if(this.props.message === null){
+        this.setState({ openSuccess: true });
+      }
+    }
   componentDidUpdate(prevProps){
     if(this.props.message !== prevProps.message){
       this.setState({ openError: true });
-      this.setState({ openSuccess: false });
     }
   }
 

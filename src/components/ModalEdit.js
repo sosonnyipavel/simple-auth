@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { editUser, modalShow } from '../actions';
+import { editUser } from '../actions';
+import { hideModal } from '../actions/editModal';
 import { showError } from '../actions/showError';
 import MaterialSnackbar from './MaterialSnackbar';
 
@@ -47,15 +48,15 @@ class ModalEdit extends React.Component {
                 const token = localStorage.getItem('token');
                 this.props.editUser(token, this.state).catch((error) => this.props.showError(error));
             }
-        this.props.modalShow(false);
+        this.props.hideModal();
     }
 
     handleSubmitNo = () => {
-        this.props.modalShow(false);
+        this.props.hideModal();
     }
     render() {
         return ReactDOM.createPortal(
-            <div className="ui dimmer modals visible active" style={{display: this.props.showModal.show}} >
+            <div className="ui dimmer modals visible active" style={{display: this.props.showModal}} >
                 <div className="ui small basic modal visible active" >
                     <div className="content">
                         <div className="ui form">
@@ -100,10 +101,10 @@ class ModalEdit extends React.Component {
 const mapStateToProps = (state) => {
     return { 
         userData: state.user,
-        showModal: state.modal,
+        showModal: state.modal.show,
         message: state.error.errorMessage
     };
 }
 
 
-export default connect(mapStateToProps, { editUser, modalShow, showError })(ModalEdit);
+export default connect(mapStateToProps, { editUser, hideModal, showError })(ModalEdit);
