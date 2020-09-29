@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { signOut, getUser } from '../actions';
+import { getUser } from '../actions/user';
+import { logOut } from '../actions/auth';
 import { showError } from '../actions/showError';
 import { showModal } from '../actions/editModal';
 import ModalEdit from './ModalEdit';
@@ -56,7 +57,7 @@ class User extends React.Component {
     signOutClick = () => {
         this.setState({ buttonLogOut: true });
         const token = localStorage.getItem('token');
-        this.props.signOut(token).catch((error) => this.props.showError(error));
+        this.props.logOut(token).catch((error) => this.props.showError(error));
     }
 
     buttonEdit = () => {
@@ -91,4 +92,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, { getUser, signOut, showModal, showError })(User);
+export default connect(mapStateToProps, { getUser, logOut, showModal, showError })(User);

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { editUser } from '../actions';
+import { editUser } from '../actions/user';
 import { hideModal } from '../actions/editModal';
 import { showError } from '../actions/showError';
 import MaterialSnackbar from './MaterialSnackbar';

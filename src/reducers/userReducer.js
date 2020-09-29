@@ -1,4 +1,4 @@
-import { GET_USER, EDIT_USER } from '../actions/types';
+import { getUserRoutine, editUserRoutine  } from '../actions';
 const INITIAL_STATE = {
     userFirstName: '',
     userLastName: '',
@@ -8,17 +8,16 @@ const INITIAL_STATE = {
 
 
 export default (state = INITIAL_STATE, action) => {
-    switch (action.type) {
-        case GET_USER:
-                return ({...state, 
-                    userFirstName: action.payload.first_name,
-                    userLastName: action.payload.last_name,
-                    userEmail: action.payload.email,
-                    userPhone: action.payload.phone
-                });
-        case EDIT_USER:
-            return ({...state});
-        default:
-            return state;
+    if(getUserRoutine.isSuccessAction(action)){
+        return ({...state, 
+            userFirstName: action.payload.data.user.first_name,
+            userLastName: action.payload.data.user.last_name,
+            userEmail: action.payload.data.user.email,
+            userPhone: action.payload.data.user.phone
+        });
     }
+    if(editUserRoutine.isSuccessAction(action)){
+        return {...state};
+    }
+    return state;
 };
